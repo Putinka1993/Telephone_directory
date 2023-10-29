@@ -8,7 +8,7 @@ def selective_menu():
         '5. Добавить абонента в справочник',
         '7. Закончить работу', sep='\n'
     )
-    choice = int(input("введите номер запроса:   "))
+    choice = input("введите номер запроса:   ")
     return choice
 
 #          ------ работа в справочнике ------
@@ -20,13 +20,13 @@ def Queries_in_the_directory():
 
     # распечатать справочник
     def Print_the_guide():
-        with open('numbers.txt', 'r', encoding='utf-8') as data_numbers:
+        with open('phon.txt', 'r', encoding='utf-8') as data_numbers:
             print(data_numbers.read())
             print()
 
     # найти телефон
     def Find_phone():
-        with open('numbers.txt', 'r') as file:
+        with open('phon.txt', 'r') as file:
             data = file.readlines()
 
         find = input("Введите Фамилию или Имя:   ").lower()
@@ -50,17 +50,60 @@ def Queries_in_the_directory():
             'Enter. Выход в главное меню',
             sep='\n'
         )
-        req = int(input("Введите номер запроса:   "))
+        req = input("Введите номер запроса:   ")
 
         match req:
-            case 1:
+            case '1':
                 Find_phone()
-
-
 
     # изменить номер телефона
     def Change_phone_number():
-        return
+
+        with open('phon.txt', 'r') as file:
+            data = file.readlines()
+
+        print("Смена номера:")
+        find = input("Введите Фамилию или Имя абонента:   ").lower()
+
+        print(f" Результаты поиска по запросу: {find}")
+        for row in data:
+            line = list(row.split(","))
+
+            if find == "":
+                print(f"По запросу {find} ничего не найдено.")
+                break
+            elif find in line[0].lower() or find in line[1].lower():
+                print(f"{line[0]} {line[1]} - {int(line[2])}")
+
+                with open('phon.txt', 'r') as f:
+                    old_data = f.read()
+
+                new_number = input(f"Введите новый номер абонента {line[0]} {line[1]}")
+
+                if new_number == "":
+                    print("Неккоректно веден номер")
+                    Change_phone_number()
+                else:
+                    new_data = old_data.replace(line[2], new_number)
+
+                    with open('phon.txt', 'w') as f:
+                        f.write(new_data)
+                    print(f"Номер успешно изменен на {new_number}")
+                    break
+        else:
+            print(f"По запросу {find} ничего не найдено.")
+        print()
+
+        print(
+            '1. Найти телефон',
+            'Enter. Выход в главное меню',
+            sep='\n'
+        )
+        req = input("Введите номер запроса:   ")
+
+        match req:
+            case '1':
+                Change_phone_number()
 
     # удалить запись
     def Delete_entry():
@@ -77,10 +120,12 @@ def Queries_in_the_directory():
     while (choice != 7):
 
         match choice:
-            case 1:
+            case '1':
                 Print_the_guide()
-            case 2:
+            case '2':
                 Find_phone()
+            case '3':
+                Change_phone_number()
 
         choice = selective_menu()
 
