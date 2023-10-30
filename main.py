@@ -23,12 +23,14 @@ def Queries_in_the_directory():
 
     # распечатать справочник
     def Print_the_guide():
+
         with open('phon.txt', 'r', encoding='utf-8') as data_numbers:
             print(data_numbers.read())
             print()
 
     # найти телефон
     def Find_phone():
+
         with open('phon.txt', 'r') as file:
             data = file.readlines()
 
@@ -111,13 +113,13 @@ def Queries_in_the_directory():
     # удалить запись
     def Delete_entry():
 
-        with open('test_phone.txt') as f:
+        with open('phon.txt') as f:
             lines = f.readlines()
 
         delete_contact = input("Выберете контакт который хотите удалить:   ").lower()
         pattern = re.compile(re.escape(delete_contact))
 
-        with open('test_phone.txt', 'w') as f:
+        with open('phon.txt', 'w') as f:
             count = 0
             for line in lines:
                 result = pattern.search(line.lower())
@@ -141,7 +143,40 @@ def Queries_in_the_directory():
 
     # найти абонента по номеру телефона
     def Find_a_subscriber_by_phone_number():
-        return
+
+        with open('phon.txt', 'r') as file:
+            data = file.readlines()
+
+        find_number = input("Введите номер абонента:   ")
+
+        print(f" Результаты поиска по запросу: {find_number}")
+        count = 0
+        for row in data:
+            line = list(row.split(","))
+            count += 1
+            if not find_number.isdigit():
+                print("Введены неправильные символы, попробуйте еще раз.")
+                Find_a_subscriber_by_phone_number()
+
+            elif int(find_number) == int("".join(list(filter(lambda x: x.isdigit(), line[2])))):
+                print(f"{line[0]} {line[1]} - {int(line[2])}")
+                count -= 1
+                continue
+
+        if count == len(data):
+            print(f"По запросу {find_number} ничего не найдено.")
+        print()
+
+        print(
+            '1. Найти телефон',
+            'Enter. Выход в главное меню',
+            sep='\n'
+        )
+        req = input("Введите номер запроса:   ")
+
+        match req:
+            case '1':
+                Find_a_subscriber_by_phone_number()
 
     # добавить абонента в справочник
     def Add_a_subscriber_to_the_directory():
@@ -156,6 +191,10 @@ def Queries_in_the_directory():
                 Find_phone()
             case '3':
                 Change_phone_number()
+            case '4':
+                Delete_entry()
+            case '5':
+                Find_a_subscriber_by_phone_number()
 
         choice = selective_menu()
 
