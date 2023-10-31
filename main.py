@@ -1,6 +1,5 @@
 import re
-
-
+from utils import read_file
 def selective_menu():
     print(
         '1. Распечатать справочник',
@@ -8,7 +7,7 @@ def selective_menu():
         '3. Изменить номер телефона',
         '4. Удалить запись',
         '5. Найти абонента по номеру телефона',
-        '5. Добавить абонента в справочник',
+        '6. Добавить абонента в справочник',
         '7. Закончить работу', sep='\n'
     )
     choice = input("введите номер запроса:   ")
@@ -31,8 +30,7 @@ def Queries_in_the_directory():
     # найти телефон
     def Find_phone():
 
-        with open('phon.txt', 'r') as file:
-            data = file.readlines()
+        data = read_file('phon.txt')
 
         find = input("Введите Фамилию или Имя:   ").lower()
 
@@ -64,8 +62,7 @@ def Queries_in_the_directory():
     # изменить номер телефона
     def Change_phone_number():
 
-        with open('phon.txt', 'r') as file:
-            data = file.readlines()
+        data = read_file('phon.txt')
 
         print("Смена номера:")
         find = input("Введите Фамилию или Имя абонента:   ").lower()
@@ -144,8 +141,7 @@ def Queries_in_the_directory():
     # найти абонента по номеру телефона
     def Find_a_subscriber_by_phone_number():
 
-        with open('phon.txt', 'r') as file:
-            data = file.readlines()
+        data = read_file('phon.txt')
 
         find_number = input("Введите номер абонента:   ")
 
@@ -180,9 +176,30 @@ def Queries_in_the_directory():
 
     # добавить абонента в справочник
     def Add_a_subscriber_to_the_directory():
-        return
 
-    while (choice != 7):
+        print("Впешите информацию нового абонента")
+        print("Фамилия, Имя, контактный телефон, описание")
+
+        last_name = input("Введите фамилию:   ")
+        name = input("Введите имя:   ")
+        number = input("Введите контактный телефон:   ")
+        description = input("описание:   ")
+
+        with open('phon.txt', 'a') as data:
+            data.write(f'{last_name}, {name}, {number}, {description}.\n')
+
+        print(
+            '1. Вписать нового абонента',
+            'Enter. Выход в главное меню',
+            sep='\n'
+        )
+        req = input("Введите номер запроса:   ")
+
+        match req:
+            case '1':
+                Add_a_subscriber_to_the_directory()
+
+    while (choice != '7'):
 
         match choice:
             case '1':
@@ -195,6 +212,9 @@ def Queries_in_the_directory():
                 Delete_entry()
             case '5':
                 Find_a_subscriber_by_phone_number()
+            case '6':
+                Add_a_subscriber_to_the_directory()
+
 
         choice = selective_menu()
 

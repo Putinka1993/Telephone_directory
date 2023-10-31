@@ -1,31 +1,20 @@
 
-def Find_a_subscriber_by_phone_number():
 
-    with open('test_phone.txt', 'r') as file:
-        data = file.readlines()
+def Add_a_subscriber_to_the_directory():
 
-    find_number = input("Введите номер абонента:   ")
+    print("Впешите информацию нового абонента")
+    print("Фамилия, Имя, контактный телефон, описание")
 
-    print(f" Результаты поиска по запросу: {find_number}")
-    count = 0
-    for row in data:
-        line = list(row.split(","))
-        count += 1
-        if not find_number.isdigit():
-            print("Введены неправильные символы, попробуйте еще раз.")
-            Find_a_subscriber_by_phone_number()
+    last_name = input("Введите фамилию:   ")
+    name = input("Введите имя:   ")
+    number = input("Введите контактный телефон:   ")
+    description = input("описание:   ")
 
-        elif int(find_number) == int("".join(list(filter(lambda x: x.isdigit(), line[2])))):
-            print(f"{line[0]} {line[1]} - {int(line[2])}")
-            count-=1
-            continue
-
-    if count == len(data):
-        print(f"По запросу {find_number} ничего не найдено.")
-    print()
+    with open('test_phone.txt', 'a') as data:
+        data.write(f'{last_name}, {name}, {number}, {description}.\n')
 
     print(
-        '1. Найти телефон',
+        '1. Вписать нового абонента',
         'Enter. Выход в главное меню',
         sep='\n'
     )
@@ -33,7 +22,6 @@ def Find_a_subscriber_by_phone_number():
 
     match req:
         case '1':
-            Find_a_subscriber_by_phone_number()
+            Add_a_subscriber_to_the_directory()
 
-
-Find_a_subscriber_by_phone_number()
+Add_a_subscriber_to_the_directory()
